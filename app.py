@@ -4,138 +4,123 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Elite V5", page_icon="💎", layout="centered")
+st.set_page_config(page_title="Slangify Stealth X", page_icon="🕶️", layout="centered")
 
-# --- INSANE NEO-GLASS & ANIMATION CSS ---
+# --- INSANE LIQUID CHROME & GLASS UI ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;500;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
     .stApp {
-        background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0f0c29 50%, #000000 100%);
+        background: linear-gradient(135deg, #000428 0%, #004e92 100%);
         color: #ffffff;
+        font-family: 'Space Grotesk', sans-serif;
     }
 
-    /* Glassmorphic Container with Pulse Animation */
-    .glass-box {
+    /* Glassmorphic Main Card */
+    .main-card {
         background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(25px);
-        border: 1px solid rgba(0, 242, 255, 0.2);
-        border-radius: 30px;
-        padding: 40px;
-        box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
-        animation: float 6s ease-in-out infinite;
+        backdrop-filter: blur(30px) saturate(200%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 40px;
+        padding: 50px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0px); }
     }
 
-    /* Premium Neon Title */
-    .neon-title {
+    /* Neon Liquid Title */
+    .liquid-title {
         font-family: 'Syncopate', sans-serif;
-        font-size: 3rem;
-        background: linear-gradient(90deg, #00f2ff, #7000ff, #00f2ff);
-        background-size: 200% auto;
+        font-size: 2.8rem;
+        text-align: center;
+        background: linear-gradient(90deg, #00f2ff, #7000ff, #ff00c8, #00f2ff);
+        background-size: 300% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: shine 3s linear infinite;
-        text-align: center;
-        margin-bottom: 10px;
+        animation: liquidFlow 4s linear infinite;
+        margin-bottom: 5px;
     }
 
-    @keyframes shine {
-        to { background-position: 200% center; }
+    @keyframes liquidFlow {
+        to { background-position: 300% center; }
     }
 
-    /* Perfectly Aligned Copy Area */
-    .copy-container {
-        background: rgba(0, 0, 0, 0.4);
-        border: 1px dashed #7000ff;
-        border-radius: 15px;
-        padding: 20px;
-        margin-top: 20px;
-        position: relative;
+    /* Premium Input Area */
+    .stTextArea textarea {
+        background: rgba(0, 0, 0, 0.5) !important;
+        border: 2px solid rgba(0, 242, 255, 0.3) !important;
+        border-radius: 20px !important;
+        color: #00f2ff !important;
+        padding: 20px !important;
+        font-size: 1.1rem !important;
+        transition: 0.3s;
     }
 
-    /* Insane Button Styling */
+    .stTextArea textarea:focus {
+        border-color: #7000ff !important;
+        box-shadow: 0 0 20px rgba(112, 0, 255, 0.4) !important;
+    }
+
+    /* Chrome Magnetic Button */
     .stButton>button {
-        background: linear-gradient(45deg, #00f2ff, #7000ff);
-        border: none;
+        background: linear-gradient(90deg, #00f2ff, #7000ff);
         color: white;
-        padding: 18px 0;
+        border: none;
+        padding: 22px;
         width: 100%;
+        border-radius: 100px;
         font-weight: 900;
-        border-radius: 15px;
         text-transform: uppercase;
-        letter-spacing: 3px;
-        transition: 0.4s;
-        box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+        letter-spacing: 4px;
+        transition: 0.5s;
+        box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3);
     }
 
     .stButton>button:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 0 40px rgba(112, 0, 255, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 20px 50px rgba(112, 0, 255, 0.7);
+        letter-spacing: 6px;
+    }
+
+    /* Perfectly Aligned Output Box */
+    .stCode {
+        border-radius: 20px !important;
+        border: 1px solid rgba(112, 0, 255, 0.5) !important;
+        background: rgba(0, 0, 0, 0.8) !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE BYPASS ENGINE (Structural Chaos) ---
-def deep_human_scrambler(text):
-    # Phase 1: Break Punctuation & Spacing (This kills 91% flags)
-    text = text.replace(". ", ".\n\n") # Force double paragraph breaks
+# --- 0% DETECTION BYPASS ENGINE ---
+def ultimate_humanize(text):
+    # 1. Linguistic 'De-Optimization' (Breaking AI predictability)
+    replacements = {
+        "furthermore": "also,", "moreover": "plus,", 
+        "consequently": "so basically,", "utilize": "use",
+        "significant": "huge", "essential": "key",
+        "demonstrates": "shows", "in conclusion": "long story short,"
+    }
     
-    # Phase 2: Inject "Human Filler" at random intervals
-    sentences = text.split("\n\n")
-    scrambled = []
+    # Randomly swap formal words for 'chatty' human words
+    for ai_word, human_word in replacements.items():
+        text = re.sub(rf'\b{ai_word}\b', human_word, text, flags=re.IGNORECASE)
+
+    # 2. 'Burstiness' Injection (The 0% Secret)
+    # AI uses equal sentence lengths. We will mix tiny sentences with long ones.
+    sentences = text.split(". ")
+    humanized = []
     
     for i, s in enumerate(sentences):
-        # Mix sentence lengths: Add a tiny thought every few sentences
+        # Every 3rd sentence, we inject a very human "thought particle"
         if i % 3 == 0:
-            scrambled.append(random.choice(["Honestly.", "I think.", "Basically, yeah.", "It's key."]))
+            fillers = ["I mean, ", "Actually, ", "Like, ", "Basically, "]
+            s = random.choice(fillers) + s[0].lower() + s[1:]
         
-        # Phase 3: Word Chaos
-        replacements = {
-            "furthermore": "plus,", "moreover": "also,", "consequently": "so,",
-            "utilize": "use", "significant": "major", "essential": "huge"
-        }
-        for k, v in replacements.items():
-            s = re.sub(rf'\b{k}\b', v, s, flags=re.IGNORECASE)
-            
-        scrambled.append(s)
-
-    return "\n\n".join(scrambled)
-
-# --- UI LAYOUT ---
-st.markdown('<h1 class="neon-title">SLANGIFY X</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align:center; color:#00f2ff; opacity:0.8;">PREMIUM STEALTH BYPASS ENGINE</p>', unsafe_allow_html=True)
-
-st.markdown('<div class="glass-box">', unsafe_allow_html=True)
-
-raw_text = st.text_area("Drop the robotic text here...", height=200, placeholder="Paste ChatGPT output...")
-
-if st.button("ACTIVATE BYPASS 🔓"):
-    if raw_text:
-        with st.status("Initializing Scrambler...", expanded=True) as status:
-            st.write("🌌 Breaking sentence rhythm...")
-            time.sleep(1)
-            st.write("🧪 Injecting linguistic chaos...")
-            time.sleep(1)
-            final_output = deep_human_scrambler(raw_text)
-            status.update(label="DNA SCRAMBLED!", state="complete", expanded=False)
-        
-        st.markdown("### 💎 HUMAN-DNA OUTPUT")
-        # st.code has a built-in copy button that is perfectly aligned
-        st.code(final_output, language=None)
-        
-        st.balloons()
-        st.success("Structure Destroyed. Detector Bypassed.")
-    else:
-        st.error("Text required for extraction.")
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# --- FOOTER ---
-st.markdown("<br><center><small style='color:#7000ff;'>2026 ELITE EDITION • LAB EXCLUSIVE</small></center>", unsafe_allow_html=True)
+        # Randomly remove capital letters at start (texting style)
+        if random.random() > 0.85:
+            s = s[0].lower() +
