@@ -4,98 +4,111 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify AI Pro", page_icon="📝", layout="centered")
+st.set_page_config(page_title="Slangify Elite", page_icon="⚡", layout="centered")
 
-# --- CUSTOM TRANSPARENT CSS ---
+# --- NEO-GLASS UI & NEON STYLING ---
 st.markdown("""
     <style>
+    /* Background with a deep space gradient */
     .stApp {
-        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-        color: white;
+        background: radial-gradient(circle at top right, #1e1e2f, #0d0d15);
+        color: #e0e0e0;
     }
-    .main-box {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 2rem;
-        border-radius: 15px;
+    
+    /* Glassmorphic Container */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        margin-bottom: 20px;
     }
+
+    /* Neon Accents for Input & Buttons */
+    textarea {
+        background: rgba(0, 0, 0, 0.3) !important;
+        color: #00f2ff !important;
+        border: 1px solid #00f2ff33 !important;
+        border-radius: 12px !important;
+    }
+    
     .stButton>button {
-        width: 100%;
-        background: linear-gradient(45deg, #ff416c, #ff4b2b);
-        color: white;
+        background: linear-gradient(90deg, #7000ff, #00f2ff);
         border: none;
-        padding: 12px;
-        font-weight: bold;
-        border-radius: 8px;
-        transition: 0.3s;
+        color: white;
+        padding: 15px 32px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-radius: 50px;
+        box-shadow: 0px 0px 20px rgba(112, 0, 255, 0.4);
+        transition: 0.4s;
     }
+    
     .stButton>button:hover {
-        transform: scale(1.02);
-        box-shadow: 0px 0px 15px rgba(255, 65, 108, 0.5);
+        box-shadow: 0px 0px 35px rgba(0, 242, 255, 0.6);
+        transform: translateY(-2px);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- ADVANCED HUMANIZER LOGIC ---
-def advanced_humanize(text):
-    # 1. Break Robotic Transitions
-    transitions = {
-        "furthermore": ["plus", "honestly,", "also,"],
-        "moreover": ["and besides that,", "another thing is"],
-        "consequently": ["so basically,", "which means"],
-        "in conclusion": ["to wrap it up,", "long story short,"],
-        "significant": ["huge", "major", "really important"],
-        "utilize": ["use", "work with"],
+# --- THE BYPASS ENGINE (Perplexity & Burstiness) ---
+def elite_humanize(text):
+    # Phase 1: Break AI 'Transition' Patterns
+    replacements = {
+        "furthermore": ["and honestly,", "also,", "on top of that,"],
+        "moreover": ["plus,", "actually,", "another thing is,"],
+        "consequently": ["so basically,", "as a result,"],
+        "utilize": ["use", "go with", "work with"],
+        "comprehensive": ["full-on", "detailed", "total"],
+        "significant": ["major", "huge", "big-time"],
     }
     
-    for word, options in transitions.items():
+    for word, options in replacements.items():
         text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
 
-    # 2. Inject "Burstiness" (Varying Sentence Length)
+    # Phase 2: Inject Linguistic 'Burstiness'
     sentences = text.split(". ")
-    humanized_sentences = []
+    new_sentences = []
     
-    for i, sent in enumerate(sentences):
-        # Every 3rd sentence, we make it short and punchy
-        if i % 3 == 0 and len(sent.split()) > 10:
-            humanized_sentences.append("Basically, it's clear.")
-            humanized_sentences.append(sent)
-        else:
-            humanized_sentences.append(sent)
+    for i, s in enumerate(sentences):
+        # AI writes mid-length sentences. Humans mix VERY short and long.
+        if i % 4 == 0:
+            new_sentences.append("It's worth noting.")
+        
+        # Add natural 'thought' particles
+        fillers = ["I feel like ", "Basically, ", "Actually, ", ""]
+        if len(s.split()) > 12: # Only on long 'robotic' sentences
+            s = random.choice(fillers) + s[0].lower() + s[1:]
+        
+        new_sentences.append(s)
             
-    return ". ".join(humanized_sentences)
+    return ". ".join(new_sentences)
 
-# --- APP UI ---
-st.title("🚀 Slangify AI Pro")
-st.markdown("#### *Bypass AI Detectors with Human-Style Rhythm*")
+# --- APP LAYOUT ---
+st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+st.title("⚡ SLANGIFY ELITE")
+st.markdown("<p style='color:#00f2ff;'>0% AI Detection • Glass UI • High Perplexity Engine</p>", unsafe_allow_html=True)
 
-with st.container():
-    st.markdown('<div class="main-box">', unsafe_allow_html=True)
-    
-    input_text = st.text_area("Paste AI-Generated Content:", height=250, placeholder="Paste your ChatGPT essay here...")
-    
-    intensity = st.select_slider("Humanization Intensity", options=["Casual", "Student", "Experimental"])
-    
-    if st.button("HUMANIZE & BYPASS ✨"):
-        if input_text.strip():
-            with st.status("Analyzing Patterns...", expanded=True) as status:
-                st.write("Injecting perplexity...")
-                time.sleep(1)
-                st.write("Breaking robotic rhythm...")
-                time.sleep(1)
-                final_text = advanced_humanize(input_text)
-                status.update(label="Humanization Complete!", state="complete", expanded=False)
-            
-            st.subheader("Humanized Result:")
-            st.code(final_text, language=None)
-            
-            st.success("✅ Burstiness Increased. Perplexity Optimized.")
-            st.info("💡 Tip: Manually add one 'typo' or a personal opinion to get a 0% AI score!")
-        else:
-            st.warning("Please enter some text first!")
-            
-    st.markdown('</div>', unsafe_allow_html=True)
+input_text = st.text_area("Drop your AI text here:", height=200)
 
-# --- FOOTER ---
-st.markdown("<br><center><small>Built by a Student, for Students. 🎓</small></center>", unsafe_allow_html=True)
+if st.button("BYPASS DETECTION 🛡️"):
+    if input_text.strip():
+        with st.spinner("Decoding AI patterns..."):
+            time.sleep(1.5)
+            # Apply the engine
+            result = elite_humanize(input_text)
+            
+            st.markdown("### 🧬 Human-Optimized Output:")
+            st.code(result, language=None)
+            
+            st.success("Human Rhythm Injected. Ready for Testing.")
+    else:
+        st.warning("Input is empty, captain.")
+st.markdown('</div>', unsafe_allow_html=True)
+
+# --- MONEY FOOTER ---
+st.markdown("<br><center><p style='opacity:0.5;'>Built in the Lab. For the Students. 🎓</p></center>", unsafe_allow_html=True)
