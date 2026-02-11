@@ -13,21 +13,21 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# CUSTOM UI STYLE
+# CUSTOM UI STYLE (Clean Premium Dark)
 # --------------------------------------------------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
 .stApp {
-    background-color: #0f0f0f;
+    background: #0e0e0e;
     color: white;
 }
 
-.container-card {
-    background: rgba(25,25,25,0.95);
+.main-card {
+    background: rgba(20,20,20,0.9);
     padding: 50px;
-    border-radius: 20px;
+    border-radius: 25px;
     max-width: 900px;
     margin: auto;
     box-shadow: 0 0 40px rgba(0,0,0,0.6);
@@ -35,7 +35,7 @@ st.markdown("""
 
 .logo {
     font-family: 'Syncopate', sans-serif;
-    font-size: 3rem;
+    font-size: 3.5rem;
     text-align: center;
     background: linear-gradient(90deg, #00f2ff, #ffffff);
     -webkit-background-clip: text;
@@ -43,52 +43,44 @@ st.markdown("""
     margin-bottom: 10px;
 }
 
-.subtitle {
-    text-align: center;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
-    color: #00f2ff;
-    margin-bottom: 30px;
+.subtext {
+    text-align:center;
+    color:#00f2ff;
+    font-size:0.8rem;
+    letter-spacing:3px;
+    margin-bottom:40px;
+}
+
+.stButton>button {
+    border-radius: 50px;
+    padding: 15px;
+    font-weight: 600;
 }
 
 textarea {
     font-family: 'Space Grotesk', sans-serif !important;
 }
-
-.stButton>button {
-    border-radius: 40px;
-    padding: 12px;
-    font-weight: 600;
-}
-
-.footer-note {
-    text-align: center;
-    font-size: 0.8rem;
-    opacity: 0.6;
-    margin-top: 30px;
-}
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# VOICE ENHANCEMENT ENGINE (LOCAL PROCESSING ONLY)
+# VOICE ENHANCEMENT ENGINE
 # --------------------------------------------------
 
-def enhance_text(text, tone="Balanced", intensity=0.5, personal=False):
+def enhance_voice(text, tone="Balanced", intensity=0.5, add_personal=False):
     if not text.strip():
         return ""
 
-    # Synonym Enhancement Map
-    synonyms = {
-        "important": ["pivotal", "essential", "critical"],
-        "big": ["major", "substantial", "significant"],
+    # --- Synonym Enhancement ---
+    synonym_map = {
+        "important": ["pivotal", "critical", "essential"],
+        "big": ["substantial", "major", "significant"],
         "good": ["effective", "strong", "solid"],
-        "bad": ["problematic", "inefficient", "weak"],
-        "shows": ["demonstrates", "reveals", "illustrates"]
+        "bad": ["problematic", "weak", "inefficient"],
+        "shows": ["demonstrates", "reveals", "illustrates"],
     }
 
-    # Replace words based on intensity
-    for word, options in synonyms.items():
+    for word, options in synonym_map.items():
         if random.random() < intensity:
             text = re.sub(
                 rf"\b{word}\b",
@@ -97,70 +89,72 @@ def enhance_text(text, tone="Balanced", intensity=0.5, personal=False):
                 flags=re.IGNORECASE
             )
 
-    # Sentence splitting
+    # --- Sentence Splitting ---
     sentences = re.split(r'(?<=[.!?])\s+', text)
-    updated_sentences = []
+    improved = []
 
-    casual_starters = [
+    conversational_openers = [
         "Honestly,",
         "The thing is,",
         "If you think about it,",
         "What stands out is,"
     ]
 
-    for sentence in sentences:
-        sentence = sentence.strip()
-        if not sentence:
+    for s in sentences:
+        s = s.strip()
+        if not s:
             continue
 
-        words = sentence.split()
+        words = s.split()
 
-        # Vary long sentences
-        if len(words) > 20 and random.random() < intensity:
+        # Rhythm variation
+        if len(words) > 18 and random.random() < intensity:
             mid = len(words) // 2
-            sentence = " ".join(words[:mid]) + ". " + " ".join(words[mid:])
+            s = " ".join(words[:mid]) + ". " + " ".join(words[mid:])
 
-        # Casual tone modification
+        # Tone adjustment
         if tone == "Casual" and random.random() < intensity:
-            if len(sentence) > 2:
-                sentence = random.choice(casual_starters) + " " + sentence[0].lower() + sentence[1:]
+            s = f"{random.choice(conversational_openers)} {s[0].lower() + s[1:] if len(s)>1 else s}"
 
-        updated_sentences.append(sentence)
+        improved.append(s)
 
-    result = " ".join(updated_sentences)
+    result = " ".join(improved)
 
-    # Add personal intro
-    if personal:
+    # Personal perspective option
+    if add_personal:
         intro = random.choice([
             "From my experience as a student,",
-            "In my academic work, I have noticed that",
+            "In my academic work, I've noticed that",
             "As someone studying this topic,"
         ])
-        result = intro + " " + result
+        result = f"{intro} {result}"
 
-    # Clean spacing
     result = re.sub(r'\s+', ' ', result).strip()
 
     return result
+
 
 # --------------------------------------------------
 # UI LAYOUT
 # --------------------------------------------------
 
-st.markdown('<div class="container-card">', unsafe_allow_html=True)
+st.markdown('<div class="main-card">', unsafe_allow_html=True)
 st.markdown('<div class="logo">SLANGIFY</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI VOICE ENHANCEMENT TOOL</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtext">AI VOICE REFINEMENT ENGINE</div>', unsafe_allow_html=True)
 
-input_text = st.text_area(
+user_text = st.text_area(
     "Paste your draft below:",
     height=250,
-    placeholder="Enter your assignment or draft here..."
+    placeholder="Enter your text here..."
 )
 
 col1, col2 = st.columns(2)
 
 with col1:
-    tone = st.selectbox("Select Tone", ["Balanced", "Casual"])
+    tone_option = st.selectbox(
+        "Select Tone",
+        ["Balanced", "Casual"]
+    )
 
 with col2:
     intensity = st.slider(
@@ -171,46 +165,35 @@ with col2:
         step=0.1
     )
 
-personal_option = st.checkbox("Add Personal Perspective")
+add_personal = st.checkbox("Add Personal Perspective")
 
 # --------------------------------------------------
 # PROCESS BUTTON
 # --------------------------------------------------
 
 if st.button("Enhance Writing"):
-    if input_text:
-        with st.spinner("Enhancing your writing..."):
-            time.sleep(1)
-            output_text = enhance_text(
-                input_text,
-                tone=tone,
+    if user_text:
+        with st.spinner("Refining voice and flow..."):
+            time.sleep(1.2)
+            processed = enhance_voice(
+                user_text,
+                tone=tone_option,
                 intensity=intensity,
-                personal=personal_option
+                add_personal=add_personal
             )
 
         st.markdown("### ✨ Enhanced Output")
-        st.text_area("", output_text, height=250)
+        st.text_area("", processed, height=250)
 
-        # Word count
-        word_count = len(output_text.split())
-        st.info(f"Word Count: {word_count}")
-
-        # Download option
         st.download_button(
             label="Download as .txt",
-            data=output_text,
+            data=processed,
             file_name="slangify_output.txt",
             mime="text/plain"
         )
 
         st.success("Enhancement complete.")
     else:
-        st.error("Please paste text first.")
-
-# Privacy Notice
-st.markdown(
-    '<div class="footer-note">🔒 Privacy Notice: This app does not store, save, or share your text. All processing happens temporarily during your session.</div>',
-    unsafe_allow_html=True
-)
+        st.error("Please enter text first.")
 
 st.markdown('</div>', unsafe_allow_html=True)
