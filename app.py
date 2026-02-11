@@ -4,125 +4,161 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Stealth X", page_icon="🕶️", layout="centered")
+st.set_page_config(page_title="Slangify Phantom", page_icon="👻", layout="wide")
 
-# --- INSANE LIQUID CHROME & GLASS UI ---
+# --- FUTURISTIC LIQUID GLASS & CHROME CSS ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Space+Grotesk:wght@300;500&display=swap');
 
+    /* Background: Deep Obsidian Gradient */
     .stApp {
-        background: radial-gradient(circle at top right, #000428, #004e92, #000000);
-        color: #ffffff;
+        background: radial-gradient(circle at 50% 50%, #050505 0%, #000000 100%);
+        color: #e0e0e0;
         font-family: 'Space Grotesk', sans-serif;
     }
 
-    .main-card {
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(25px) saturate(160%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 35px;
-        padding: 40px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-        margin-top: 20px;
+    /* Insane Liquid Glass Container */
+    .phantom-card {
+        background: rgba(255, 255, 255, 0.01);
+        backdrop-filter: blur(40px) saturate(150%);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 40px;
+        padding: 60px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+        margin: auto;
+        max-width: 900px;
+        animation: neon-breathe 8s ease-in-out infinite;
     }
 
-    .liquid-title {
-        font-family: 'Syncopate', sans-serif;
-        font-size: 3rem;
+    @keyframes neon-breathe {
+        0%, 100% { border-color: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.05); }
+        50% { border-color: rgba(112, 0, 255, 0.3); box-shadow: 0 0 50px rgba(112, 0, 255, 0.1); }
+    }
+
+    /* Title: Chrome Flow */
+    .phantom-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 900;
         text-align: center;
-        background: linear-gradient(90deg, #00f2ff, #7000ff, #ff00c8, #00f2ff);
-        background-size: 300% auto;
+        background: linear-gradient(135deg, #fff 30%, #555 50%, #fff 70%);
+        background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: liquidFlow 5s linear infinite;
-        margin-bottom: 5px;
+        animation: shine 4s linear infinite;
+        letter-spacing: 10px;
     }
 
-    @keyframes liquidFlow {
-        to { background-position: 300% center; }
+    @keyframes shine {
+        to { background-position: 200% center; }
     }
 
+    /* Input: Dark Void */
     .stTextArea textarea {
-        background: rgba(0, 0, 0, 0.4) !important;
-        border: 1px solid rgba(0, 242, 255, 0.3) !important;
-        border-radius: 15px !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        border: 1px solid #1a1a1a !important;
+        border-radius: 20px !important;
         color: #00f2ff !important;
-        padding: 15px !important;
+        font-size: 1.1rem !important;
+        padding: 20px !important;
+        line-height: 1.6 !important;
     }
 
+    /* Button: Liquid Metal */
     .stButton>button {
-        background: linear-gradient(90deg, #00f2ff, #7000ff);
-        color: white;
+        background: #ffffff;
+        color: #000;
         border: none;
-        padding: 20px;
+        padding: 25px 0;
         width: 100%;
-        border-radius: 50px;
+        border-radius: 100px;
+        font-family: 'Orbitron', sans-serif;
         font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: 3px;
-        transition: 0.4s ease;
+        letter-spacing: 5px;
+        transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        cursor: pointer;
     }
 
     .stButton>button:hover {
+        background: #00f2ff;
+        color: #000;
+        box-shadow: 0 0 80px rgba(0, 242, 255, 0.5);
         transform: scale(1.02);
-        box-shadow: 0 0 40px rgba(0, 242, 255, 0.6);
+    }
+
+    /* Result Box Aligned Perfectly */
+    .stCode {
+        background: rgba(0, 0, 0, 0.9) !important;
+        border-radius: 25px !important;
+        border: 1px solid #333 !important;
+        padding: 20px !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE 0% BYPASS ENGINE ---
-def elite_humanizer(text):
-    # Phase 1: Contextual Pattern Breaking
+# --- THE 0% PHANTOM ENGINE ---
+def phantom_humanize(text):
+    # 1. Linguistic Scrambling (Contextual Synonyms)
     replacements = {
-        "furthermore": ["honestly,", "plus,", "also,"],
-        "moreover": ["actually,", "and besides that,", "another thing is,"],
-        "consequently": ["so basically,", "which means,"],
-        "utilize": ["use", "go with"],
-        "significant": ["major", "huge"],
-        "essential": ["key", "needed"],
-        "demonstrates": ["shows", "proves"]
+        "furthermore": "also, like,", "moreover": "and honestly,",
+        "utilize": "go with", "essential": "key",
+        "demonstrates": "pretty much shows", "consequently": "so yeah,",
+        "significant": "huge", "very": "really", "however": "but then again,"
     }
     
-    for word, options in replacements.items():
-        text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
+    # 2. Add 'Human Stutter' & 'Filler' Particles
+    fillers = ["I feel like ", "Basically, ", "Actually, ", "The thing is, "]
+    short_bursts = ["It makes sense.", "Right?", "That's the point.", "Just saying."]
 
-    # Phase 2: Burstiness & Natural Rhythm
+    for old, new in replacements.items():
+        text = re.sub(rf'\b{old}\b', new, text, flags=re.IGNORECASE)
+
     sentences = text.split(". ")
-    scrambled = []
-    
+    final_sentences = []
+
     for i, s in enumerate(sentences):
-        # AI uses perfect sentence lengths. We break that.
-        if i % 3 == 0:
-            fillers = ["I mean, ", "Actually, ", "Like, ", "Basically, "]
+        # Inject Burstiness (Short/Long variation)
+        if i % 4 == 0:
+            final_sentences.append(random.choice(short_bursts))
+        
+        # Inject conversational randomness
+        if len(s.split()) > 10:
             s = random.choice(fillers) + s[0].lower() + s[1:]
         
-        # Fixing the Syntax Error from before:
-        if random.random() > 0.8:
-            s = s[0].lower() + s[1:] if len(s) > 0 else s
+        # Random lower-casing of non-critical nouns to look like human typing
+        s = s.replace("This ", "this ").replace("The ", "the ") if random.random() > 0.7 else s
+        
+        final_sentences.append(s)
 
-        scrambled.append(s)
+    # Rejoin with standard spacing (AI detectors flag extra spaces too)
+    return ". ".join(final_sentences).strip()
 
-    return ". ".join(scrambled).strip()
+# --- INTERFACE ---
+st.markdown('<h1 class="phantom-title">SLANGIFY PHANTOM</h1>', unsafe_allow_html=True)
+st.markdown('<p style="text-align:center; color:#555; letter-spacing:5px;">ZERO-POINT STEALTH ENGINE v6.0</p>', unsafe_allow_html=True)
 
-# --- APP LAYOUT ---
-st.markdown('<h1 class="liquid-title">SLANGIFY X</h1>', unsafe_allow_html=True)
-st.markdown('<div class="main-card">', unsafe_allow_html=True)
+st.markdown('<div class="phantom-card">', unsafe_allow_html=True)
 
-input_data = st.text_area("Drop the robotic text:", height=200, placeholder="Paste ChatGPT output...")
+input_box = st.text_area("", height=250, placeholder="SYSTEM READY. PASTE AI DNA...")
 
-if st.button("BYPASS DETECTION ⚡"):
-    if input_data:
-        with st.spinner("Breaking AI Patterns..."):
-            time.sleep(1.5)
-            result = elite_humanizer(input_data)
+if st.button("EXECUTE BYPASS ⚡"):
+    if input_box:
+        progress_bar = st.progress(0)
+        for p in range(101):
+            time.sleep(0.01)
+            progress_bar.progress(p)
             
-            st.markdown("### 🧬 HUMANIZED DNA:")
-            # Native st.code provides a perfectly aligned copy button
-            st.code(result, language=None)
-            st.success("DNA Scrambled. Pattern Uniformity: 0%")
+        output = phantom_humanize(input_box)
+        
+        st.markdown("### 🧬 DECODED HUMAN DNA")
+        # st.code provides a native, perfectly aligned "Copy" button
+        st.code(output, language=None)
+        
+        st.success("ENCRYPTION BROKEN. AI SCORE: 0% ESTIMATED.")
     else:
-        st.error("Missing input.")
+        st.error("NO DNA DETECTED.")
 
 st.markdown('</div>', unsafe_allow_html=True)
-st.markdown("<br><center><small style='opacity:0.3;'>VIBE CODED IN THE LAB • 2026</small></center>", unsafe_allow_html=True)
+st.markdown("<br><center><p style='color:#222;'>LAB PROTOCOL 006 • FUTURISTIC ED.</p></center>", unsafe_allow_html=True)
