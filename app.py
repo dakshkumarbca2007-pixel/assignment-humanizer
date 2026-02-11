@@ -4,111 +4,106 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Elite", page_icon="⚡", layout="centered")
+st.set_page_config(page_title="Slangify X", page_icon="⚡", layout="centered")
 
-# --- NEO-GLASS UI & NEON STYLING ---
+# --- NEO-LIQUID GLASS UI (2026 STYLE) ---
 st.markdown("""
     <style>
-    /* Background with a deep space gradient */
     .stApp {
-        background: radial-gradient(circle at top right, #1e1e2f, #0d0d15);
-        color: #e0e0e0;
+        background: radial-gradient(circle at top right, #000428, #004e92);
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
     }
-    
-    /* Glassmorphic Container */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-        margin-bottom: 20px;
+    /* Liquid Glass Container */
+    .liquid-glass {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-radius: 30px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        margin: 20px 0;
     }
-
-    /* Neon Accents for Input & Buttons */
-    textarea {
-        background: rgba(0, 0, 0, 0.3) !important;
+    /* Neon Glow Input */
+    .stTextArea textarea {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 2px solid #00f2ff55 !important;
+        border-radius: 15px !important;
         color: #00f2ff !important;
-        border: 1px solid #00f2ff33 !important;
-        border-radius: 12px !important;
+        box-shadow: inset 0 0 10px #00f2ff11;
     }
-    
+    /* Magnetic Liquid Button */
     .stButton>button {
-        background: linear-gradient(90deg, #7000ff, #00f2ff);
-        border: none;
+        background: linear-gradient(135deg, #00f2ff, #7000ff);
         color: white;
-        padding: 15px 32px;
-        font-weight: 800;
-        text-transform: uppercase;
+        border: none;
+        padding: 18px;
+        border-radius: 60px;
+        font-weight: 900;
         letter-spacing: 2px;
-        border-radius: 50px;
-        box-shadow: 0px 0px 20px rgba(112, 0, 255, 0.4);
-        transition: 0.4s;
+        transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 0 30px rgba(112, 0, 255, 0.6);
     }
-    
     .stButton>button:hover {
-        box-shadow: 0px 0px 35px rgba(0, 242, 255, 0.6);
-        transform: translateY(-2px);
+        transform: scale(1.05) rotate(-1deg);
+        box-shadow: 0 0 50px rgba(0, 242, 255, 0.8);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE BYPASS ENGINE (Perplexity & Burstiness) ---
-def elite_humanize(text):
-    # Phase 1: Break AI 'Transition' Patterns
-    replacements = {
+# --- STEALTH BYPASS ENGINE ---
+def stealth_humanize(text):
+    # Phase 1: Complexity Mapping
+    # Replacing formal markers with "messy" human alternatives
+    patterns = {
         "furthermore": ["and honestly,", "also,", "on top of that,"],
-        "moreover": ["plus,", "actually,", "another thing is,"],
-        "consequently": ["so basically,", "as a result,"],
-        "utilize": ["use", "go with", "work with"],
-        "comprehensive": ["full-on", "detailed", "total"],
-        "significant": ["major", "huge", "big-time"],
+        "moreover": ["plus,", "actually,", "wait, also,"],
+        "utilize": ["use", "go with", "mess around with"],
+        "consequently": ["so,", "which basically means", "as a result,"],
+        "significant": ["huge", "major", "crazy important"],
+        "essential": ["key", "a big deal", "needed"],
     }
     
-    for word, options in replacements.items():
+    for word, options in patterns.items():
         text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
 
-    # Phase 2: Inject Linguistic 'Burstiness'
+    # Phase 2: Burstiness Injection (Rhythm Breaking)
     sentences = text.split(". ")
-    new_sentences = []
+    human_blocks = []
     
     for i, s in enumerate(sentences):
-        # AI writes mid-length sentences. Humans mix VERY short and long.
-        if i % 4 == 0:
-            new_sentences.append("It's worth noting.")
+        # AI always writes 15-20 words. Humans write 3 words, then 30 words.
+        if i % 3 == 0: 
+            human_blocks.append(random.choice(["It's true.", "I guess.", "Basically.", "Look."]))
         
-        # Add natural 'thought' particles
-        fillers = ["I feel like ", "Basically, ", "Actually, ", ""]
-        if len(s.split()) > 12: # Only on long 'robotic' sentences
-            s = random.choice(fillers) + s[0].lower() + s[1:]
-        
-        new_sentences.append(s)
+        # Randomly lower the case of the first word to mimic 'fast typing'
+        if random.random() > 0.8:
+            s = s[0].lower() + s[1:]
             
-    return ". ".join(new_sentences)
+        human_blocks.append(s)
+            
+    return ". ".join(human_blocks)
 
 # --- APP LAYOUT ---
-st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-st.title("⚡ SLANGIFY ELITE")
-st.markdown("<p style='color:#00f2ff;'>0% AI Detection • Glass UI • High Perplexity Engine</p>", unsafe_allow_html=True)
+st.markdown('<div class="liquid-glass">', unsafe_allow_html=True)
+st.title("⚡ SLANGIFY X")
+st.write("### AI Bypass Engine | Liquid Glass v4.2")
 
-input_text = st.text_area("Drop your AI text here:", height=200)
+input_data = st.text_area("Paste Content to Scramble:", height=200)
 
-if st.button("BYPASS DETECTION 🛡️"):
-    if input_text.strip():
-        with st.spinner("Decoding AI patterns..."):
-            time.sleep(1.5)
-            # Apply the engine
-            result = elite_humanize(input_text)
+if st.button("EXECUTE STEALTH BYPASS 🛡️"):
+    if input_data.strip():
+        bar = st.progress(0)
+        for i in range(100):
+            time.sleep(0.01)
+            bar.progress(i + 1)
             
-            st.markdown("### 🧬 Human-Optimized Output:")
-            st.code(result, language=None)
-            
-            st.success("Human Rhythm Injected. Ready for Testing.")
+        final_output = stealth_humanize(input_data)
+        
+        st.markdown("### 🧬 Scrambled DNA:")
+        st.code(final_output, language=None)
+        
+        st.success("Bypass Active. Pattern Uniformity Destroyed.")
     else:
-        st.warning("Input is empty, captain.")
+        st.error("Input missing, captain.")
 st.markdown('</div>', unsafe_allow_html=True)
-
-# --- MONEY FOOTER ---
-st.markdown("<br><center><p style='opacity:0.5;'>Built in the Lab. For the Students. 🎓</p></center>", unsafe_allow_html=True)
