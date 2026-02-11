@@ -27,6 +27,6 @@ if st.button("Humanize ✨"):
         st.divider()
         st.write("🙏 Saved your grade? Support the dev!")
         # Replace 'yourusername' with your actual BuyMeACoffee link later
-        st.link_button("☕ Buy Me a Coffee ($1)", "https://www.buymeacoffee.com")
+        st.link_button("☕ Buy Me a Coffee ($1)", "https://assignment-humanizer-irjhot5i65xbbccoznbugg.streamlit.app/")
     else:
         st.error("Please paste text first!")
