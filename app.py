@@ -87,4 +87,42 @@ def elite_humanizer(text):
     for word, options in replacements.items():
         text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
 
-    # Phase
+    # Phase 2: Burstiness & Natural Rhythm
+    sentences = text.split(". ")
+    scrambled = []
+    
+    for i, s in enumerate(sentences):
+        # AI uses perfect sentence lengths. We break that.
+        if i % 3 == 0:
+            fillers = ["I mean, ", "Actually, ", "Like, ", "Basically, "]
+            s = random.choice(fillers) + s[0].lower() + s[1:]
+        
+        # Fixing the Syntax Error from before:
+        if random.random() > 0.8:
+            s = s[0].lower() + s[1:] if len(s) > 0 else s
+
+        scrambled.append(s)
+
+    return ". ".join(scrambled).strip()
+
+# --- APP LAYOUT ---
+st.markdown('<h1 class="liquid-title">SLANGIFY X</h1>', unsafe_allow_html=True)
+st.markdown('<div class="main-card">', unsafe_allow_html=True)
+
+input_data = st.text_area("Drop the robotic text:", height=200, placeholder="Paste ChatGPT output...")
+
+if st.button("BYPASS DETECTION ⚡"):
+    if input_data:
+        with st.spinner("Breaking AI Patterns..."):
+            time.sleep(1.5)
+            result = elite_humanizer(input_data)
+            
+            st.markdown("### 🧬 HUMANIZED DNA:")
+            # Native st.code provides a perfectly aligned copy button
+            st.code(result, language=None)
+            st.success("DNA Scrambled. Pattern Uniformity: 0%")
+    else:
+        st.error("Missing input.")
+
+st.markdown('</div>', unsafe_allow_html=True)
+st.markdown("<br><center><small style='opacity:0.3;'>VIBE CODED IN THE LAB • 2026</small></center>", unsafe_allow_html=True)
