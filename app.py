@@ -1,32 +1,34 @@
-import streamlit as st
+import random
 
-st.set_page_config(page_title="Slangify AI", page_icon="📝")
+def humanize(text):
+    # 1. Smarter Word Swap (more options)
+    replacements = {
+        "furthermore": ["also", "and honestly,"],
+        "consequently": ["so basically,", "as a result,"],
+        "utilize": ["use", "go with"],
+        "essential": ["key", "super important"],
+        "demonstrates": ["shows", "really proves"],
+    }
+    
+    for ai_word, student_options in replacements.items():
+        # Randomly pick a replacement to increase "Perplexity"
+        replacement = random.choice(student_options)
+        text = text.replace(ai_word, replacement)
 
-# Your humanizing logic
-human_map = {
-    "furthermore": "also", "moreover": "plus", "consequently": "so",
-    "utilize": "use", "comprehensive": "full", "exhibit": "show",
-    "delve into": "look at", "testament": "proof", "essential": "key"
-}
-
-st.title("🎓 Slangify AI: Student Humanizer")
-st.write("Paste your robotic AI text below to make it sound like a real student.")
-
-user_input = st.text_area("Input AI Text:", height=200)
-
-if st.button("Humanize ✨"):
-    if user_input:
-        output = user_input
-        for ai_word, student_word in human_map.items():
-            output = output.replace(ai_word, student_word)
-            output = output.replace(ai_word.capitalize(), student_word.capitalize())
-        
-        st.subheader("Humanized Result:")
-        st.success(output)
-        
-        st.divider()
-        st.write("🙏 Saved your grade? Support the dev!")
-        # Replace 'yourusername' with your actual BuyMeACoffee link later
-        st.link_button("☕ Buy Me a Coffee ($1)", "https://assignment-humanizer-irjhot5i65xbbccoznbugg.streamlit.app/")
-    else:
-        st.error("Please paste text first!")
+    # 2. Break the "Robotic" sentence structure
+    # AI writes sentences of the same length. Let's break some in half.
+    sentences = text.split(". ")
+    new_sentences = []
+    for s in sentences:
+        if len(s.split()) > 15: # If the sentence is too long/robotic
+            parts = s.split(", ")
+            if len(parts) > 1:
+                # Break it at the comma to create "Burstiness"
+                new_sentences.append(parts[0])
+                new_sentences.append("Basically, " + parts[1].lower())
+            else:
+                new_sentences.append(s)
+        else:
+            new_sentences.append(s)
+            
+    return ". ".join(new_sentences)
