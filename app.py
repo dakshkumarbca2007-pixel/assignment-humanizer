@@ -1,152 +1,199 @@
 import streamlit as st
 import random
-import time
 import re
+import time
 
-# --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Phantom-X", page_icon="🌑", layout="wide")
+# --------------------------------------------------
+# PAGE CONFIG
+# --------------------------------------------------
+st.set_page_config(
+    page_title="Slangify – Voice Enhancer",
+    page_icon="✨",
+    layout="wide"
+)
 
-# --- HIGH-TECH OBSIDIAN CHROME UI ---
+# --------------------------------------------------
+# CUSTOM UI STYLE (Clean Premium Dark)
+# --------------------------------------------------
 st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
-    .stApp {
-        background: #000000;
-        color: #ffffff;
+.stApp {
+    background: #0e0e0e;
+    color: white;
+}
+
+.main-card {
+    background: rgba(20,20,20,0.9);
+    padding: 50px;
+    border-radius: 25px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.logo {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 3.5rem;
+    text-align: center;
+    background: linear-gradient(90deg, #00f2ff, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.subtext {
+    text-align:center;
+    color:#00f2ff;
+    font-size:0.8rem;
+    letter-spacing:3px;
+    margin-bottom:40px;
+}
+
+.stButton>button {
+    border-radius: 50px;
+    padding: 15px;
+    font-weight: 600;
+}
+
+textarea {
+    font-family: 'Space Grotesk', sans-serif !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# --------------------------------------------------
+# VOICE ENHANCEMENT ENGINE
+# --------------------------------------------------
+
+def enhance_voice(text, tone="Balanced", intensity=0.5, add_personal=False):
+    if not text.strip():
+        return ""
+
+    # --- Synonym Enhancement ---
+    synonym_map = {
+        "important": ["pivotal", "critical", "essential"],
+        "big": ["substantial", "major", "significant"],
+        "good": ["effective", "strong", "solid"],
+        "bad": ["problematic", "weak", "inefficient"],
+        "shows": ["demonstrates", "reveals", "illustrates"],
     }
 
-    /* Premium High-Tech Card */
-    .phantom-card {
-        background: rgba(15, 15, 15, 0.8);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 30px;
-        padding: 50px;
-        max-width: 850px;
-        margin: auto;
-        position: relative;
-        box-shadow: 0 0 50px rgba(0,0,0,1);
-        overflow: hidden;
-    }
+    for word, options in synonym_map.items():
+        if random.random() < intensity:
+            text = re.sub(
+                rf"\b{word}\b",
+                lambda _: random.choice(options),
+                text,
+                flags=re.IGNORECASE
+            )
 
-    /* Vector Wave Animation */
-    .phantom-card::before {
-        content: "";
-        position: absolute;
-        top: -50%; left: -50%; width: 200%; height: 200%;
-        background: conic-gradient(from 180deg, transparent, #00f2ff, transparent 40%);
-        animation: rotate 6s linear infinite;
-        z-index: -1;
-        opacity: 0.1;
-    }
+    # --- Sentence Splitting ---
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    improved = []
 
-    @keyframes rotate { 100% { transform: rotate(1turn); } }
+    conversational_openers = [
+        "Honestly,",
+        "The thing is,",
+        "If you think about it,",
+        "What stands out is,"
+    ]
 
-    /* Chrome Brutalist Logo */
-    .phantom-logo {
-        font-family: 'Syncopate', sans-serif;
-        font-size: 4.5rem;
-        font-weight: 900;
-        text-align: center;
-        background: linear-gradient(180deg, #ffffff 0%, #333 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        letter-spacing: -6px;
-        margin-bottom: 5px;
-    }
+    for s in sentences:
+        s = s.strip()
+        if not s:
+            continue
 
-    /* Premium Input Void */
-    .stTextArea textarea {
-        background: #050505 !important;
-        border: 1px solid #1a1a1a !important;
-        border-radius: 15px !important;
-        color: #00f2ff !important;
-        font-family: 'Space Grotesk', sans-serif !important;
-        padding: 25px !important;
-        font-size: 1.1rem !important;
-    }
+        words = s.split()
 
-    /* Liquid Mercury Button */
-    .stButton>button {
-        background: #ffffff;
-        color: #000;
-        border: none;
-        padding: 25px;
-        width: 100%;
-        border-radius: 100px;
-        font-family: 'Syncopate', sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    }
-
-    .stButton>button:hover {
-        background: #00f2ff;
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 242, 255, 0.4);
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# --- ADVANCED BYPASS ENGINE (PHANTOM-CORE) ---
-def phantom_scrambler(text):
-    # Phase 1: Break Predictability (Injecting "Human Errors" & Hedging)
-    replacements = {
-        "furthermore": ["and honestly,", "also,"],
-        "consequently": ["so basically,", "which means"],
-        "significant": ["huge", "massive"],
-        "essential": ["key", "a big deal"],
-        "demonstrates": ["shows", "really proves"]
-    }
-    
-    for word, options in replacements.items():
-        text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
-
-    # Phase 2: Structural Jitter (Non-Linear Rhythm)
-    sentences = text.split(". ")
-    scrambled = []
-    
-    for i, s in enumerate(sentences):
-        # AI never starts sentences with 'Actually' or 'I mean'
-        if i % 3 == 0:
-            s = random.choice(["I mean, ", "Actually, ", "Basically, ", "So, "]) + s[0].lower() + s[1:]
-        
-        # Inject "Thought Markers" (Dashes and Ellipses)
-        if len(s.split()) > 10 and random.random() > 0.6:
-            words = s.split()
+        # Rhythm variation
+        if len(words) > 18 and random.random() < intensity:
             mid = len(words) // 2
-            s = " ".join(words[:mid]) + "—" + " ".join(words[mid:])
-            
-        scrambled.append(s)
+            s = " ".join(words[:mid]) + ". " + " ".join(words[mid:])
 
-    # Phase 3: The "Deep Stealth" Injection (Hardcoded Pattern Killer)
-    # Adding a personalized student opening
-    scrambled.insert(0, "From a student perspective,")
-    
-    # Phase 4: Intentional Linguistic Flaws (Removing double spaces/fixing bot-spacing)
-    result = ". ".join(scrambled).strip()
-    result = result.replace("..", ".").replace(" ,", ",")
-    
+        # Tone adjustment
+        if tone == "Casual" and random.random() < intensity:
+            s = f"{random.choice(conversational_openers)} {s[0].lower() + s[1:] if len(s)>1 else s}"
+
+        improved.append(s)
+
+    result = " ".join(improved)
+
+    # Personal perspective option
+    if add_personal:
+        intro = random.choice([
+            "From my experience as a student,",
+            "In my academic work, I've noticed that",
+            "As someone studying this topic,"
+        ])
+        result = f"{intro} {result}"
+
+    result = re.sub(r'\s+', ' ', result).strip()
+
     return result
 
-# --- INTERFACE ---
-st.markdown('<div class="phantom-card">', unsafe_allow_html=True)
-st.markdown('<h1 class="phantom-logo">SLANGIFY</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align:center; color:#00f2ff; letter-spacing:10px; font-size:0.6rem; opacity:0.6;">NEURAL BYPASS ACTIVE // PROTOCOL 10.0</p>', unsafe_allow_html=True)
 
-user_text = st.text_area("", height=250, placeholder="SYSTEM READY. PASTE DNA...")
+# --------------------------------------------------
+# UI LAYOUT
+# --------------------------------------------------
 
-if st.button("EXECUTE GHOST MODE"):
+st.markdown('<div class="main-card">', unsafe_allow_html=True)
+st.markdown('<div class="logo">SLANGIFY</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtext">AI VOICE REFINEMENT ENGINE</div>', unsafe_allow_html=True)
+
+user_text = st.text_area(
+    "Paste your draft below:",
+    height=250,
+    placeholder="Enter your text here..."
+)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    tone_option = st.selectbox(
+        "Select Tone",
+        ["Balanced", "Casual"]
+    )
+
+with col2:
+    intensity = st.slider(
+        "Enhancement Intensity",
+        min_value=0.1,
+        max_value=1.0,
+        value=0.5,
+        step=0.1
+    )
+
+add_personal = st.checkbox("Add Personal Perspective")
+
+# --------------------------------------------------
+# PROCESS BUTTON
+# --------------------------------------------------
+
+if st.button("Enhance Writing"):
     if user_text:
-        with st.status("Breaking Pattern Matrices...", expanded=False):
-            time.sleep(2)
-            processed = phantom_scrambler(user_text)
-        
-        st.markdown("### 🧬 SCRAMBLED OUTPUT")
-        st.code(processed, language=None)
-        st.success("DNA Scrambled. Pattern Uniformity: 0%")
+        with st.spinner("Refining voice and flow..."):
+            time.sleep(1.2)
+            processed = enhance_voice(
+                user_text,
+                tone=tone_option,
+                intensity=intensity,
+                add_personal=add_personal
+            )
+
+        st.markdown("### ✨ Enhanced Output")
+        st.text_area("", processed, height=250)
+
+        st.download_button(
+            label="Download as .txt",
+            data=processed,
+            file_name="slangify_output.txt",
+            mime="text/plain"
+        )
+
+        st.success("Enhancement complete.")
     else:
-        st.error("Input missing.")
+        st.error("Please enter text first.")
+
 st.markdown('</div>', unsafe_allow_html=True)
