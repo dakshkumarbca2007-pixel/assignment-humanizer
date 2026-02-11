@@ -4,154 +4,149 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Vibe", page_icon="🧬", layout="wide")
+st.set_page_config(page_title="Slangify Phantom-X", page_icon="🌑", layout="wide")
 
-# --- HYPER-GENZ CYBER-STREETWEAR UI ---
+# --- HIGH-TECH OBSIDIAN CHROME UI ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;700&family=DotGothic16&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;500;700&display=swap');
 
     .stApp {
         background: #000000;
         color: #ffffff;
     }
 
-    /* Glitch Card Styling */
-    .vibe-card {
-        background: rgba(10, 10, 10, 0.95);
-        border-left: 5px solid #00f2ff;
-        border-right: 5px solid #7000ff;
-        border-radius: 0px; /* Brutalist sharp edges */
-        padding: 60px;
-        box-shadow: 20px 20px 0px rgba(0, 242, 255, 0.1);
-        max-width: 900px;
+    /* Premium High-Tech Card */
+    .phantom-card {
+        background: rgba(15, 15, 15, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 30px;
+        padding: 50px;
+        max-width: 850px;
         margin: auto;
+        position: relative;
+        box-shadow: 0 0 50px rgba(0,0,0,1);
+        overflow: hidden;
     }
 
-    /* Gen-Z Hypebeast Title */
-    .hype-title {
+    /* Vector Wave Animation */
+    .phantom-card::before {
+        content: "";
+        position: absolute;
+        top: -50%; left: -50%; width: 200%; height: 200%;
+        background: conic-gradient(from 180deg, transparent, #00f2ff, transparent 40%);
+        animation: rotate 6s linear infinite;
+        z-index: -1;
+        opacity: 0.1;
+    }
+
+    @keyframes rotate { 100% { transform: rotate(1turn); } }
+
+    /* Chrome Brutalist Logo */
+    .phantom-logo {
         font-family: 'Syncopate', sans-serif;
-        font-size: 5rem;
+        font-size: 4.5rem;
         font-weight: 900;
-        text-align: left;
-        line-height: 0.8;
-        background: linear-gradient(90deg, #fff, #555, #00f2ff);
+        text-align: center;
+        background: linear-gradient(180deg, #ffffff 0%, #333 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        letter-spacing: -5px;
-        margin-bottom: 20px;
-        transform: skewX(-10deg);
+        letter-spacing: -6px;
+        margin-bottom: 5px;
     }
 
-    .tag-line {
-        font-family: 'DotGothic16', sans-serif;
-        color: #7000ff;
-        font-size: 1.2rem;
-        margin-bottom: 40px;
-        text-transform: uppercase;
-    }
-
-    /* Cyber Input */
+    /* Premium Input Void */
     .stTextArea textarea {
-        background: #0d0d0d !important;
-        border: 2px solid #1a1a1a !important;
-        border-radius: 0px !important;
-        color: #fff !important;
+        background: #050505 !important;
+        border: 1px solid #1a1a1a !important;
+        border-radius: 15px !important;
+        color: #00f2ff !important;
         font-family: 'Space Grotesk', sans-serif !important;
-        padding: 20px !important;
-        font-size: 1.2rem !important;
+        padding: 25px !important;
+        font-size: 1.1rem !important;
     }
 
-    /* High-Contrast Button */
+    /* Liquid Mercury Button */
     .stButton>button {
-        background: #00f2ff;
+        background: #ffffff;
         color: #000;
         border: none;
-        padding: 30px;
+        padding: 25px;
         width: 100%;
-        border-radius: 0px;
+        border-radius: 100px;
         font-family: 'Syncopate', sans-serif;
-        font-weight: 900;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 5px;
-        font-size: 1.2rem;
-        transition: 0.2s;
-        cursor: crosshair;
+        letter-spacing: 3px;
+        transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     .stButton>button:hover {
-        background: #7000ff;
-        color: #fff;
-        box-shadow: 10px 10px 0px #00f2ff;
-        transform: translate(-5px, -5px);
-    }
-
-    .stCode {
-        border-radius: 0px !important;
-        background: #111 !important;
-        border: 1px solid #333 !important;
+        background: #00f2ff;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 242, 255, 0.4);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE "VIBE-CHECK" BYPASS ENGINE ---
-def vibe_humanize(text):
-    # Phase 1: Slang & Filler Injection
-    # AI hates these because they are 'inefficient'
-    fillers = [" honestly, ", " basically, ", " like, ", " literally ", " lowkey "]
+# --- ADVANCED BYPASS ENGINE (PHANTOM-CORE) ---
+def phantom_scrambler(text):
+    # Phase 1: Break Predictability (Injecting "Human Errors" & Hedging)
+    replacements = {
+        "furthermore": ["and honestly,", "also,"],
+        "consequently": ["so basically,", "which means"],
+        "significant": ["huge", "massive"],
+        "essential": ["key", "a big deal"],
+        "demonstrates": ["shows", "really proves"]
+    }
     
-    def add_vibe(s):
-        if len(s.split()) > 6 and random.random() > 0.4:
-            words = s.split()
-            words.insert(random.randint(1, 3), random.choice(fillers))
-            return " ".join(words)
-        return s
+    for word, options in replacements.items():
+        text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
 
-    # Phase 2: Structural Messiness
-    # Replace robotic transitions with Gen-Z pivots
-    text = re.sub(r'\bFurthermore\b', "Also, and another thing,", text, flags=re.IGNORECASE)
-    text = re.sub(r'\bHowever\b', "But like,", text, flags=re.IGNORECASE)
-    text = re.sub(r'\bTherefore\b', "So yeah,", text, flags=re.IGNORECASE)
-
+    # Phase 2: Structural Jitter (Non-Linear Rhythm)
     sentences = text.split(". ")
-    final = []
+    scrambled = []
     
     for i, s in enumerate(sentences):
-        # Apply vibe-check
-        s = add_vibe(s)
-        
-        # Every few sentences, add a "dramatic pause"
+        # AI never starts sentences with 'Actually' or 'I mean'
         if i % 3 == 0:
-            s = s + "..."
+            s = random.choice(["I mean, ", "Actually, ", "Basically, ", "So, "]) + s[0].lower() + s[1:]
+        
+        # Inject "Thought Markers" (Dashes and Ellipses)
+        if len(s.split()) > 10 and random.random() > 0.6:
+            words = s.split()
+            mid = len(words) // 2
+            s = " ".join(words[:mid]) + "—" + " ".join(words[mid:])
             
-        final.append(s)
+        scrambled.append(s)
 
-    # Final bypass: Start with a personal 'Opinion' marker
-    final.insert(0, "I personally feel like")
+    # Phase 3: The "Deep Stealth" Injection (Hardcoded Pattern Killer)
+    # Adding a personalized student opening
+    scrambled.insert(0, "From a student perspective,")
     
-    return ". ".join(final).strip()
+    # Phase 4: Intentional Linguistic Flaws (Removing double spaces/fixing bot-spacing)
+    result = ". ".join(scrambled).strip()
+    result = result.replace("..", ".").replace(" ,", ",")
+    
+    return result
 
 # --- INTERFACE ---
-st.markdown('<div class="vibe-card">', unsafe_allow_html=True)
-st.markdown('<h1 class="hype-title">SLANG<br>IFY.</h1>', unsafe_allow_html=True)
-st.markdown('<p class="tag-line">// DETECTOR_KILLER_V7.0</p>', unsafe_allow_html=True)
+st.markdown('<div class="phantom-card">', unsafe_allow_html=True)
+st.markdown('<h1 class="phantom-logo">SLANGIFY</h1>', unsafe_allow_html=True)
+st.markdown('<p style="text-align:center; color:#00f2ff; letter-spacing:10px; font-size:0.6rem; opacity:0.6;">NEURAL BYPASS ACTIVE // PROTOCOL 10.0</p>', unsafe_allow_html=True)
 
-user_data = st.text_area("", height=250, placeholder="PASTE_AI_DNA_HERE")
+user_text = st.text_area("", height=250, placeholder="SYSTEM READY. PASTE DNA...")
 
-if st.button("BYPASS_SYSTEM"):
-    if user_data:
-        # Fun Gen-Z loading messages
-        msg = st.empty()
-        msgs = ["Sending vibe check...", "Killing the bot...", "Making it bussin...", "Ghosting the AI..."]
-        for m in msgs:
-            msg.markdown(f"<p style='color:#00f2ff;'>{m}</p>", unsafe_allow_html=True)
-            time.sleep(0.5)
-            
-        processed = vibe_humanize(user_data)
+if st.button("EXECUTE GHOST MODE"):
+    if user_text:
+        with st.status("Breaking Pattern Matrices...", expanded=False):
+            time.sleep(2)
+            processed = phantom_scrambler(user_text)
         
-        st.markdown("### // HUMAN_DNA_EXTRACTED")
+        st.markdown("### 🧬 SCRAMBLED OUTPUT")
         st.code(processed, language=None)
-        st.success("100% VIBE. 0% ROBOT.")
+        st.success("DNA Scrambled. Pattern Uniformity: 0%")
     else:
-        st.error("NO_INPUT_DETECTED")
+        st.error("Input missing.")
 st.markdown('</div>', unsafe_allow_html=True)
