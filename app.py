@@ -4,9 +4,9 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Ghost", page_icon="👻", layout="wide")
+st.set_page_config(page_title="Slangify Phantom-X", page_icon="💀", layout="wide")
 
-# --- LIQUID MERCURY & STEALTH OBSIDIAN UI ---
+# --- CYBER-NOIR PREMIUM UI ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;700&display=swap');
@@ -16,130 +16,130 @@ st.markdown("""
         color: #ffffff;
     }
 
-    /* Stealth Container */
-    .stealth-card {
-        background: rgba(10, 10, 10, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.03);
-        border-radius: 40px;
-        padding: 50px;
-        box-shadow: 0 0 100px rgba(0,0,0,1);
+    /* Phantom Container */
+    .phantom-card {
+        background: linear-gradient(145deg, #0a0a0a, #111111);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 30px;
+        padding: 60px;
+        box-shadow: 0 40px 100px rgba(0,0,0,1);
         margin: auto;
         max-width: 800px;
-        text-align: center;
-        border-top: 1px solid rgba(0, 242, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .phantom-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(transparent, rgba(0, 242, 255, 0.1), transparent 30%);
+        animation: rotate 10s linear infinite;
     }
 
-    /* Mercury Title */
-    .mercury-title {
+    @keyframes rotate {
+        100% { transform: rotate(1turn); }
+    }
+
+    /* Chrome Typography */
+    .chrome-title {
         font-family: 'Syncopate', sans-serif;
-        font-size: 3.5rem;
+        font-size: 4rem;
         font-weight: 700;
-        background: linear-gradient(180deg, #ffffff 0%, #444444 100%);
+        text-align: center;
+        background: linear-gradient(180deg, #fff 0%, #444 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        letter-spacing: -2px;
-        margin-bottom: 10px;
+        letter-spacing: -4px;
+        margin-bottom: 0;
     }
 
-    .status-tag {
-        font-family: 'Space Grotesk', sans-serif;
-        color: #00f2ff;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        font-size: 0.6rem;
-        opacity: 0.6;
-        margin-bottom: 30px;
-    }
-
-    /* Dark Void Input */
+    /* Input Void */
     .stTextArea textarea {
-        background: #050505 !important;
-        border: 1px solid #111 !important;
-        border-radius: 20px !important;
-        color: #e0e0e0 !important;
+        background: #000000 !important;
+        border: 1px solid #222 !important;
+        border-radius: 15px !important;
+        color: #00f2ff !important;
         font-family: 'Space Grotesk', sans-serif !important;
         padding: 20px !important;
-        transition: 0.4s;
     }
 
-    .stTextArea textarea:focus {
-        border-color: #00f2ff33 !important;
-        box-shadow: 0 0 40px rgba(0, 242, 255, 0.05) !important;
-    }
-
-    /* The "Ghost" Button */
+    /* Liquid Metal Button */
     .stButton>button {
         background: #ffffff;
         color: #000;
         border: none;
-        padding: 20px 40px;
-        border-radius: 100px;
-        font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        transition: 0.5s;
+        padding: 25px;
         width: 100%;
+        border-radius: 100px;
+        font-family: 'Syncopate', sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        cursor: pointer;
     }
 
     .stButton>button:hover {
         background: #00f2ff;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 40px rgba(0, 242, 255, 0.3);
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px rgba(0, 242, 255, 0.4);
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE GHOST ENGINE (Hard Bypass) ---
-def ghost_humanize(text):
-    # 1. Linguistic Noise (Injecting human "thinking" markers)
-    def inject_noise(match):
-        word = match.group(0)
-        # Randomly decide to add a human-like prefix
-        if random.random() > 0.7:
-            noise = random.choice(["mostly ", "actually ", "pretty much ", "essentially "])
-            return noise + word.lower()
-        return word
-
-    # Targeting common formal adjectives AI loves
-    text = re.sub(rf'\b(significant|important|essential|crucial|necessary|clear)\b', inject_noise, text, flags=re.IGNORECASE)
-
-    # 2. Structural Scrambling (Destroying the 100% pattern)
-    sentences = text.split(". ")
-    scrambled = []
-    
-    for i, s in enumerate(sentences):
-        # AI never starts sentences with "So," or "And,"
-        if i % 3 == 0:
-            prefixes = ["So, ", "I mean, ", "Actually, ", "Like, "]
-            s = random.choice(prefixes) + s[0].lower() + s[1:]
+# --- THE "HUMAN ENTROPY" ENGINE (Targeting 0%) ---
+def entropy_humanizer(text):
+    # Phase 1: Contextual Pattern Breaking
+    def scramble_sentence(s):
+        # Adding 'Hedging' - Humans aren't as certain as AI
+        hedges = ["I guess ", "Actually, ", "It seems like ", "Basically, ", "So, "]
+        if random.random() > 0.6:
+            s = random.choice(hedges) + s[0].lower() + s[1:]
         
-        # Inject a "short-circuit" sentence to spike burstiness
-        if i == 2:
-            scrambled.append("It’s honestly that simple.")
+        # Adding 'Human Punctuation' - AI hates dashes and ellipses
+        if len(s.split()) > 10 and random.random() > 0.7:
+            words = s.split()
+            mid = len(words) // 2
+            s = " ".join(words[:mid]) + "—" + " ".join(words[mid:])
             
-        scrambled.append(s)
+        return s
 
-    # Join and strip extra whitespace
-    return ". ".join(scrambled).strip()
+    # Phase 2: Word Swap (Low predictability)
+    swaps = {
+        "furthermore": "plus", "moreover": "also", "significant": "huge",
+        "consequently": "so", "utilize": "use", "essential": "key"
+    }
+    for k, v in swaps.items():
+        text = re.sub(rf'\b{k}\b', v, text, flags=re.IGNORECASE)
 
-# --- APP LAYOUT ---
-st.markdown('<div class="stealth-card">', unsafe_allow_html=True)
-st.markdown('<h1 class="mercury-title">GHOST</h1>', unsafe_allow_html=True)
-st.markdown('<p class="status-tag">Neural Bypass Active // Meerut Edition</p>', unsafe_allow_html=True)
+    # Phase 3: Structural Chaos
+    sentences = text.split(". ")
+    final = [scramble_sentence(s) for s in sentences]
+    
+    # Inject a "Short Burst" to destroy Perplexity patterns
+    final.insert(1, "That's just how it is.")
+    
+    return ". ".join(final).strip()
 
-user_input = st.text_area("", height=250, placeholder="PASTE ROBOTIC TEXT...")
+# --- INTERFACE ---
+st.markdown('<div class="phantom-card">', unsafe_allow_html=True)
+st.markdown('<h1 class="chrome-title">PHANTOM</h1>', unsafe_allow_html=True)
+st.markdown('<p style="text-align:center; color:#00f2ff; letter-spacing:8px; font-size:0.6rem; margin-bottom:30px;">ULTRA-PREMIUM BYPASS</p>', unsafe_allow_html=True)
 
-if st.button("BYPASS AI DETECTION"):
-    if user_input:
-        with st.status("Ghosting DNA...", expanded=False):
-            time.sleep(1.5)
-            final_text = ghost_humanize(user_input)
+user_text = st.text_area("", height=250, placeholder="SYSTEM READY...")
+
+if st.button("INITIATE BYPASS"):
+    if user_text:
+        with st.status("Injecting Entropy...", expanded=False):
+            time.sleep(2)
+            processed = entropy_humanizer(user_text)
         
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.code(final_text, language=None)
-        st.success("DNA Scrambled. Pattern Uniformity: 0.1%")
+        st.markdown("### 🧬 SCRAMBLED OUTPUT")
+        st.code(processed, language=None)
+        st.success("DNA Scrambled. AI Signature: 0%")
     else:
-        st.error("Input empty.")
-
+        st.error("No input.")
 st.markdown('</div>', unsafe_allow_html=True)
