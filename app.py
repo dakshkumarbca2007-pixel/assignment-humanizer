@@ -4,161 +4,154 @@ import time
 import re
 
 # --- UI CONFIGURATION ---
-st.set_page_config(page_title="Slangify Phantom", page_icon="👻", layout="wide")
+st.set_page_config(page_title="Slangify Ultra", page_icon="🌑", layout="wide")
 
-# --- FUTURISTIC LIQUID GLASS & CHROME CSS ---
+# --- LIQUID TITANIUM & OBSIDIAN UI ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Space+Grotesk:wght@300;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Inter:wght@900&family=JetBrains+Mono:wght@300&display=swap');
 
-    /* Background: Deep Obsidian Gradient */
     .stApp {
-        background: radial-gradient(circle at 50% 50%, #050505 0%, #000000 100%);
-        color: #e0e0e0;
-        font-family: 'Space Grotesk', sans-serif;
+        background: #050505;
+        color: #ffffff;
     }
 
-    /* Insane Liquid Glass Container */
-    .phantom-card {
-        background: rgba(255, 255, 255, 0.01);
-        backdrop-filter: blur(40px) saturate(150%);
+    /* Ultra-Premium Glass Card */
+    .ultra-card {
+        background: rgba(10, 10, 10, 0.8);
         border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 40px;
+        border-radius: 50px;
         padding: 60px;
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+        box-shadow: 0 50px 100px rgba(0,0,0,1), 0 0 20px rgba(0, 242, 255, 0.03);
         margin: auto;
-        max-width: 900px;
-        animation: neon-breathe 8s ease-in-out infinite;
-    }
-
-    @keyframes neon-breathe {
-        0%, 100% { border-color: rgba(0, 242, 255, 0.1); box-shadow: 0 0 20px rgba(0, 242, 255, 0.05); }
-        50% { border-color: rgba(112, 0, 255, 0.3); box-shadow: 0 0 50px rgba(112, 0, 255, 0.1); }
-    }
-
-    /* Title: Chrome Flow */
-    .phantom-title {
-        font-family: 'Orbitron', sans-serif;
-        font-size: 3.5rem;
-        font-weight: 900;
+        max-width: 850px;
         text-align: center;
-        background: linear-gradient(135deg, #fff 30%, #555 50%, #fff 70%);
-        background-size: 200% auto;
+    }
+
+    /* Titanium Title */
+    .titanium-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 4.5rem;
+        font-weight: 900;
+        letter-spacing: -3px;
+        background: linear-gradient(180deg, #fff 0%, #333 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: shine 4s linear infinite;
-        letter-spacing: 10px;
+        margin-bottom: 0px;
     }
 
-    @keyframes shine {
-        to { background-position: 200% center; }
+    /* Animated Subtitle */
+    .glow-sub {
+        color: #00f2ff;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-size: 0.7rem;
+        margin-bottom: 40px;
+        font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Input: Dark Void */
+    /* Input Void */
     .stTextArea textarea {
-        background: rgba(0, 0, 0, 0.8) !important;
+        background: #000000 !important;
         border: 1px solid #1a1a1a !important;
-        border-radius: 20px !important;
-        color: #00f2ff !important;
-        font-size: 1.1rem !important;
-        padding: 20px !important;
-        line-height: 1.6 !important;
+        border-radius: 25px !important;
+        color: #e0e0e0 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        padding: 25px !important;
+        transition: 0.5s;
     }
 
-    /* Button: Liquid Metal */
+    .stTextArea textarea:focus {
+        border-color: #00f2ff !important;
+        box-shadow: 0 0 30px rgba(0, 242, 255, 0.1) !important;
+    }
+
+    /* The "Elite" Button */
     .stButton>button {
         background: #ffffff;
         color: #000;
         border: none;
-        padding: 25px 0;
-        width: 100%;
+        padding: 25px 50px;
         border-radius: 100px;
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Inter', sans-serif;
         font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: 5px;
-        transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        cursor: pointer;
+        letter-spacing: 2px;
+        transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        width: 100%;
     }
 
     .stButton>button:hover {
         background: #00f2ff;
-        color: #000;
-        box-shadow: 0 0 80px rgba(0, 242, 255, 0.5);
-        transform: scale(1.02);
+        transform: scale(0.98);
+        box-shadow: 0 0 50px rgba(0, 242, 255, 0.4);
     }
 
-    /* Result Box Aligned Perfectly */
+    /* Aligned Code Block */
     .stCode {
-        background: rgba(0, 0, 0, 0.9) !important;
-        border-radius: 25px !important;
-        border: 1px solid #333 !important;
-        padding: 20px !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        border-radius: 20px !important;
+        border: 1px solid #111 !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- THE 0% PHANTOM ENGINE ---
-def phantom_humanize(text):
-    # 1. Linguistic Scrambling (Contextual Synonyms)
-    replacements = {
-        "furthermore": "also, like,", "moreover": "and honestly,",
-        "utilize": "go with", "essential": "key",
-        "demonstrates": "pretty much shows", "consequently": "so yeah,",
-        "significant": "huge", "very": "really", "however": "but then again,"
+# --- THE "CHAOS" ENGINE (Targeting 0% Score) ---
+def chaos_humanizer(text):
+    # 1. Break the Vocabulary "Bot"
+    # Replacing AI transition words with "Human Flaws"
+    flaws = {
+        "furthermore": ["and honestly,", "also,"],
+        "consequently": ["so basically,", "which means"],
+        "additionally": ["plus,", "another thing,"],
+        "significant": ["huge", "major"],
+        "essential": ["key", "a big deal"],
+        "illustrates": ["shows", "really proves"]
     }
     
-    # 2. Add 'Human Stutter' & 'Filler' Particles
-    fillers = ["I feel like ", "Basically, ", "Actually, ", "The thing is, "]
-    short_bursts = ["It makes sense.", "Right?", "That's the point.", "Just saying."]
+    for word, options in flaws.items():
+        text = re.sub(rf'\b{word}\b', random.choice(options), text, flags=re.IGNORECASE)
 
-    for old, new in replacements.items():
-        text = re.sub(rf'\b{old}\b', new, text, flags=re.IGNORECASE)
-
+    # 2. Structural Chaos (Mixing sentence types)
     sentences = text.split(". ")
-    final_sentences = []
-
+    scrambled = []
+    
     for i, s in enumerate(sentences):
-        # Inject Burstiness (Short/Long variation)
-        if i % 4 == 0:
-            final_sentences.append(random.choice(short_bursts))
+        # AI never uses 'thought pauses'. We will.
+        if i % 3 == 0:
+            s = random.choice(["I guess ", "Honestly, ", "Actually, ", ""]) + s[0].lower() + s[1:]
         
-        # Inject conversational randomness
-        if len(s.split()) > 10:
-            s = random.choice(fillers) + s[0].lower() + s[1:]
+        # Randomly shorten sentences or add a "burst" sentence
+        if i == 1:
+            scrambled.append("It's pretty clear.")
         
-        # Random lower-casing of non-critical nouns to look like human typing
-        s = s.replace("This ", "this ").replace("The ", "the ") if random.random() > 0.7 else s
-        
-        final_sentences.append(s)
-
-    # Rejoin with standard spacing (AI detectors flag extra spaces too)
-    return ". ".join(final_sentences).strip()
-
-# --- INTERFACE ---
-st.markdown('<h1 class="phantom-title">SLANGIFY PHANTOM</h1>', unsafe_allow_html=True)
-st.markdown('<p style="text-align:center; color:#555; letter-spacing:5px;">ZERO-POINT STEALTH ENGINE v6.0</p>', unsafe_allow_html=True)
-
-st.markdown('<div class="phantom-card">', unsafe_allow_html=True)
-
-input_box = st.text_area("", height=250, placeholder="SYSTEM READY. PASTE AI DNA...")
-
-if st.button("EXECUTE BYPASS ⚡"):
-    if input_box:
-        progress_bar = st.progress(0)
-        for p in range(101):
-            time.sleep(0.01)
-            progress_bar.progress(p)
+        # Break robotic flow with comma splices (common in student writing)
+        if len(s.split()) > 15:
+            s = s.replace(", ", "—and like— ")
             
-        output = phantom_humanize(input_box)
+        scrambled.append(s)
+
+    # 3. Final spacing clean up (No extra spaces)
+    return ". ".join(scrambled).strip()
+
+# --- INTERFACE LAYOUT ---
+st.markdown('<div class="ultra-card">', unsafe_allow_html=True)
+st.markdown('<h1 class="titanium-title">SLANGIFY</h1>', unsafe_allow_html=True)
+st.markdown('<p class="glow-sub">Neural Pattern Scrambler // Ver. 0.0.1</p>', unsafe_allow_html=True)
+
+input_data = st.text_area("", height=250, placeholder="SYSTEM READY. PASTE AI DNA...")
+
+if st.button("BYPASS ENGINE"):
+    if input_data:
+        with st.status("Scrambling...", expanded=False):
+            time.sleep(1)
+            result = chaos_humanizer(input_data)
         
-        st.markdown("### 🧬 DECODED HUMAN DNA")
-        # st.code provides a native, perfectly aligned "Copy" button
-        st.code(output, language=None)
-        
-        st.success("ENCRYPTION BROKEN. AI SCORE: 0% ESTIMATED.")
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.code(result, language=None)
+        st.success("DNA Pattern Uniformity Destroyed. (Estimated AI: 0-5%)")
     else:
-        st.error("NO DNA DETECTED.")
+        st.error("No data.")
 
 st.markdown('</div>', unsafe_allow_html=True)
-st.markdown("<br><center><p style='color:#222;'>LAB PROTOCOL 006 • FUTURISTIC ED.</p></center>", unsafe_allow_html=True)
+st.markdown("<br><center><p style='color:#1a1a1a;'>VIBE CODED // MEERUT LABS</p></center>", unsafe_allow_html=True)
